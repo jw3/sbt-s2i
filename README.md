@@ -1,16 +1,15 @@
 s2i for sbt
-===========
+===
 
 Created using s2i [v1.1.7](https://github.com/openshift/source-to-image/releases/tag/v1.1.7)
 
 ### invoke
 
-`s2i build <source code path / URL> sbts2i <application image>`
+build an image tagged as `image-name`
 
-You can then run the resulting image via:
+`s2i build <path / url> sbt-s2i <image-name>`
 
-`docker run <application image>`
 
-### Configuration
+### configuration
 
-`SBT_SUBPROJECT`; String: Specify the subproject that this build targets
+`SBT_SUBPROJECT`; optional string that specifies the sbt subproject to build in (not needed if not multi-project)
