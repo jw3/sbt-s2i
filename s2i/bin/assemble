@@ -7,6 +7,10 @@
 #	https://github.com/openshift/source-to-image/blob/master/docs/builder_image.md
 #
 
+# SBT_SUBPROJECT provides multi project support
+readonly sbt_stage_cmd="${SBT_SUBPROJECT:+${SBT_SUBPROJECT}/}stage"
+readonly sbt_target_dir="${SBT_SUBPROJECT:+${SBT_SUBPROJECT}/}target"
+
 # If the 'sbt-s2i' assemble script is executed with the '-h' flag, print the usage.
 if [[ "$1" == "-h" ]]; then
 	exec /usr/libexec/s2i/usage
@@ -23,4 +27,8 @@ echo "---> Installing application source..."
 cp -Rf /tmp/src/. ./
 
 echo "---> Building application from source..."
-# TODO: Add build steps for your application, eg npm install, bundle install, pip install, etc.
+sbt ${sbt_stage_cmd}
+
+echo "---> Updating script permissions"
+chgrp 0 ${sbt_target_dir}/universal/stage/bin/*
+chmod g+x ${sbt_target_dir}/universal/stage/bin/*

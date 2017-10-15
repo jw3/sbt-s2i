@@ -6,5 +6,22 @@
 # For more information see the documentation:
 #	https://github.com/openshift/source-to-image/blob/master/docs/builder_image.md
 #
+# https://superuser.com/a/38982 for find
+#
 
-exec asdf -p 8080
+readonly sbt_run_cmd="${SBT_SUBPROJECT:+${SBT_SUBPROJECT}/}run"
+readonly sbt_target_dir="${SBT_SUBPROJECT:+${SBT_SUBPROJECT}/}target"
+readonly staging_path="universal/stage/bin"
+
+readonly execable_count=$(find ${sbt_target_dir}/${staging_path} -executable -type f | wc -l)
+
+if [ ${execable_count} -eq 1 ]; then
+  readonly execable=$(find ${sbt_target_dir}/${staging_path} -executable -type f)
+  exec ${execable}
+elif [ ${execable_count} -eq 0 ]; then
+  echo "No executable scripts were found in $sbt_target_dir/$staging_path"
+  exit 404
+else
+  echo "Multiple executable scripts in $sbt_target_dir/$staging_path"
+  exit 123
+fi

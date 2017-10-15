@@ -7,6 +7,8 @@ Sample invocation:
 
 s2i build <source code path/URL> sbt-s2i <application image>
 
+The build will need configured with SBT_SUBPROJECT if it is a multi-module build
+
 You can then run the resulting image via:
 docker run <application image>
 EOF
