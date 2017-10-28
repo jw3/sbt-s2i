@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/redhat-openjdk-18/openjdk18-openshift
+FROM openshift/base-centos7
 
 MAINTAINER John Wass <jwass3@gmail.com>
 
@@ -15,13 +15,15 @@ LABEL io.k8s.display-name="sbt-s2i $SBT_S2I_BUILDER_VERSION" \
 
 USER root
 
-RUN curl -s https://bintray.com/sbt/rpm/rpm > bintray-sbt-rpm.repo \
+RUN INSTALL_PKGS="curl net-tools tar unzip bc which lsof java-1.8.0-openjdk java-1.8.0-openjdk-devel sbt-$SBT_VERSION" \
+ && curl -s https://bintray.com/sbt/rpm/rpm > bintray-sbt-rpm.repo \
  && mv bintray-sbt-rpm.repo /etc/yum.repos.d/ \
- && yum install -y sbt-$SBT_VERSION \
+ && yum install -y --enablerepo=centosplus $INSTALL_PKGS \
+ && rpm -V $INSTALL_PKGS \
  && yum clean all -y
 
 RUN sbt -ivy /opt/app-root/src/.ivy2 \
- && chown -R 1001:1001 /opt/app-root \
+ && chown -R 1001:0 /opt/app-root \
  && chmod -R g+rw /opt/app-root
 
 COPY ./s2i/bin/ /usr/libexec/s2i
