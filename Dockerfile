@@ -5,7 +5,9 @@ MAINTAINER John Wass <jwass3@gmail.com>
 ARG SBT_VERSION
 ARG SCALA_VERSION
 
-ENV SBT_S2I_BUILDER_VERSION 0.1
+ENV SBT_S2I_BUILDER_VERSION=0.1
+ENV IVY_DIR=/opt/app-root/src/.ivy2
+ENV SBT_DIR=/opt/app-root/src/.sbt
 
 LABEL io.k8s.display-name="sbt-s2i $SBT_S2I_BUILDER_VERSION" \
       io.k8s.description="sbt:$SBT_VERSION,scala:$SCALA_VERSION" \
@@ -15,16 +17,24 @@ LABEL io.k8s.display-name="sbt-s2i $SBT_S2I_BUILDER_VERSION" \
 
 USER root
 
-RUN INSTALL_PKGS="curl net-tools tar unzip bc which lsof java-1.8.0-openjdk java-1.8.0-openjdk-devel sbt-$SBT_VERSION" \
+RUN INSTALL_PKGS="nano curl net-tools tar unzip which lsof java-1.8.0-openjdk java-1.8.0-openjdk-devel sbt-$SBT_VERSION" \
  && curl -s https://bintray.com/sbt/rpm/rpm > bintray-sbt-rpm.repo \
  && mv bintray-sbt-rpm.repo /etc/yum.repos.d/ \
  && yum install -y --enablerepo=centosplus $INSTALL_PKGS \
  && rpm -V $INSTALL_PKGS \
  && yum clean all -y
 
-RUN sbt -ivy /opt/app-root/src/.ivy2 \
+COPY plugins.sbt /tmp
+
+RUN mkdir -p /tmp/caching/project \
+ && cd /tmp/caching \
+ && echo "sbt.version = $SBT_VERSION" > project/build.properties \
+ && echo "scalaVersion := \"$SCALA_VERSION\"" > build.sbt \
+ && mv /tmp/plugins.sbt project \
+ && sbt -v -sbt-dir $SBT_DIR -sbt-boot $SBT_DIR/boot -ivy $IVY_DIR compile \
  && chown -R 1001:0 /opt/app-root \
- && chmod -R g+rw /opt/app-root
+ && chmod -R g+rw /opt/app-root \
+ && rm -rf /tmp/*
 
 COPY ./s2i/bin/ /usr/libexec/s2i
 

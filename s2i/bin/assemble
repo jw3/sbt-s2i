@@ -27,7 +27,7 @@ echo "---> Installing application source..."
 cp -Rf /tmp/src/. ./
 
 echo "---> Building application from source..."
-sbt ${sbt_stage_cmd}
+sbt -v -sbt-dir ${SBT_DIR} -sbt-boot ${SBT_DIR}/boot -ivy ${IVY_DIR} ${sbt_stage_cmd}
 
 echo "---> Updating script permissions"
 chgrp 0 ${sbt_target_dir}/universal/stage/bin/*
