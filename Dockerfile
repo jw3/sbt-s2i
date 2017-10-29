@@ -10,7 +10,7 @@ ENV IVY_DIR=/opt/app-root/src/.ivy2
 ENV SBT_DIR=/opt/app-root/src/.sbt
 
 LABEL io.k8s.display-name="sbt-s2i $SBT_S2I_BUILDER_VERSION" \
-      io.k8s.description="sbt:$SBT_VERSION,scala:$SCALA_VERSION" \
+      io.k8s.description="S2I Builder with cached SBT $SBT_VERSION and Scala $SCALA_VERSION" \
       io.openshift.expose-services="9000:http" \
       io.openshift.tags="builder,sbt,scala" \
       io.openshift.min-memory="512Mi"

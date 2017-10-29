@@ -29,6 +29,12 @@ cp -Rf /tmp/src/. ./
 echo "---> Building application from source..."
 sbt -v -sbt-dir ${SBT_DIR} -sbt-boot ${SBT_DIR}/boot -ivy ${IVY_DIR} ${sbt_stage_cmd}
 
-echo "---> Updating script permissions"
+echo "---> Pruning Windows scripts..."
+rm ${sbt_target_dir}/universal/stage/bin/*.bat
+
+echo "---> Updating script permissions..."
 chgrp 0 ${sbt_target_dir}/universal/stage/bin/*
 chmod g+x ${sbt_target_dir}/universal/stage/bin/*
+
+echo "---> Scripts prepared..."
+ls -al ${sbt_target_dir}/universal/stage/bin
