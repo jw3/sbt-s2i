@@ -20,3 +20,13 @@ build an image tagged as `image-name`
 
 - `SBT_SUBPROJECT`; optional string that specifies the sbt subproject to build in (not needed if not multi-project)
 - `plugins.sbt`; contains default set of sbt plugins that will be cached during the image build
+
+### OpenShift Imagestream
+
+An OpenShift Imagestream is provided that can be used in the OpenSHift console to build applications using this s2i image. To use it, simply add it as follows:
+
+```
+oc create -f sbt.yml
+```
+
+Note the openshift user must have rights to the openshift namespace (i.e. a cluster admin).
