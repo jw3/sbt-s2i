@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+readonly parts=(${SOURCE_BRANCH//-/ })
+readonly sbt_version=${parts[0]}
+readonly scala_version=${parts[1]}
+
+echo "sbt $sbt_version"
+echo "scala $scala_version"
+
+docker build --build-arg SCALA_VERSION="$scala_version" --build-arg SBT_VERSION="$sbt_version" -t "$IMAGE_NAME" .
