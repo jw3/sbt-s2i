@@ -1,0 +1,80 @@
+---
+apiVersion: v1
+kind: Template
+metadata:
+  name: scala-sbt
+  annotations:
+    displayName: Scala SBT
+    description: SBT with multi-project support
+    iconClass: "icon-scala"
+    tags: "scala,sbt"
+
+parameters:
+  - name: NAME
+    displayName: Name
+    description: The name assigned to all of the frontend objects defined in this template.
+    value: scala-sbt-example
+    required: true
+
+  - name: SBT_VERSION
+    displayName: SBT Version
+    description: Version of SBT to use (eg. 1.1.0).
+    value: 1.1.0
+    required: true
+
+  - name: SCALA_VERSION
+    displayName: Scala Version
+    description: Version of Scala to use (eg. 2.12.5).
+    value: 2.12.5
+    required: true
+
+  - name: SOURCE_REPOSITORY_URL
+    displayName: Git Repository URL
+    description: The URL of the repository with your application source code.
+    value: https://github.com/jw3/example-scala-openshift.git
+    required: true
+
+  - name: SOURCE_REPOSITORY_REF
+    displayName: Git Reference
+    description: Repository ref name.
+    value: master
+    required: true
+
+  - name: SUBPROJECT
+    displayName: Subproject
+    description: Name of subdirectory in multi-project SBT builds.
+    required: false
+
+objects:
+  - kind: BuildConfig
+    apiVersion: v1
+    metadata:
+      name: ${NAME}
+      annotations:
+        iconClass: "icon-scala"
+    spec:
+      source:
+        type: Git
+        git:
+          uri: "${SOURCE_REPOSITORY_URL}"
+          ref: "${SOURCE_REPOSITORY_REF}"
+        contextDir: ""
+      strategy:
+        type: Source
+        sourceStrategy:
+          from:
+            kind: DockerImage
+            name: jwiii/$SBT_VERSION-$SCALA_VERSION
+          env:
+            - name: SBT_SUBPROJECT
+              value: ${SUBPROJECT}
+      output:
+        to:
+          kind: ImageStreamTag
+          name: "${NAME}:latest"
+  - kind: ImageStream
+    apiVersion: v1
+    metadata:
+      name: "${NAME}"
+      annotations:
+        description: Keeps track of changes in the application image
