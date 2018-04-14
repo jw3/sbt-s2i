@@ -18,8 +18,8 @@ parameters:
 
   - name: SBT_VERSION
     displayName: SBT Version
-    description: Version of SBT to use (eg. 1.1.0).
-    value: 1.1.0
+    description: Version of SBT to use (eg. 0.13.16).
+    value: 0.13.16
     required: true
 
   - name: SCALA_VERSION
