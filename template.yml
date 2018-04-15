@@ -70,10 +70,10 @@ objects:
         to:
           kind: ImageStreamTag
           name: "${NAME}:latest"
+      triggers:
+        - type: ConfigChange
 
   - kind: ImageStream
     apiVersion: v1
     metadata:
       name: "${NAME}"
-      annotations:
-        description: Keeps track of changes in the application image
