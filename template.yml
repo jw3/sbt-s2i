@@ -12,8 +12,7 @@ metadata:
 parameters:
   - name: NAME
     displayName: Name
-    description: The name assigned to all of the frontend objects defined in this template.
-    value: scala-sbt-example
+    description: The name applied to objects created by this template.
     required: true
 
   - name: SBT_VERSION
@@ -31,7 +30,6 @@ parameters:
   - name: SOURCE_REPOSITORY_URL
     displayName: Git Repository URL
     description: The URL of the repository with your application source code.
-    value: https://github.com/jw3/example-scala-openshift.git
     required: true
 
   - name: SOURCE_REPOSITORY_REF
@@ -64,7 +62,7 @@ objects:
         sourceStrategy:
           from:
             kind: DockerImage
-            name: jwiii/$SBT_VERSION-$SCALA_VERSION
+            name: jwiii/sbt-s2i:${SBT_VERSION}-${SCALA_VERSION}
           env:
             - name: SBT_SUBPROJECT
               value: ${SUBPROJECT}
@@ -72,6 +70,7 @@ objects:
         to:
           kind: ImageStreamTag
           name: "${NAME}:latest"
+
   - kind: ImageStream
     apiVersion: v1
     metadata:
