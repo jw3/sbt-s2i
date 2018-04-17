@@ -51,6 +51,10 @@ objects:
       annotations:
         iconClass: "icon-scala"
     spec:
+      resources:
+        limits:
+          cpu: "1"
+          memory: "1Gi"
       source:
         type: Git
         git:
