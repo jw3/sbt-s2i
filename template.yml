@@ -150,4 +150,30 @@ objects:
             kind: ImageStreamTag
             name: ${NAME}:latest
         type: ImageChange
-    status: {}
+  - apiVersion: v1
+    kind: ImageStream
+    metadata:
+      name: sbt-s2i
+      annotations:
+        iconClass: icon-scala
+    spec:
+      lookupPolicy:
+        local: false
+      tags:
+      - annotations:
+          description: Build and run Scala and Java applications using SBT
+          iconClass: icon-scala
+          openshift.io/display-name: SBT
+          openshift.io/provider-display-name: https://github.com/jw3/sbt-s2i
+          sampleRepo: https://github.com/theiterators/akka-http-microservice
+          supports: sbt,java,scala
+          tags: builder,java,scala
+          version: ${SBT_VERSION}-${SCALA_VERSION}
+        from:
+          kind: DockerImage
+          name: jwiii/sbt-s2i:${SBT_VERSION}-${SCALA_VERSION}
+        generation: 1
+        importPolicy: {}
+        name: ${SBT_VERSION}-${SCALA_VERSION}
+        referencePolicy:
+          type: Source
