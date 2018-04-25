@@ -154,6 +154,7 @@ objects:
             kind: ImageStreamTag
             name: ${NAME}:latest
         type: ImageChange
+
   - apiVersion: v1
     kind: ImageStream
     metadata:
@@ -176,7 +177,6 @@ objects:
         from:
           kind: DockerImage
           name: jwiii/sbt-s2i:${SBT_VERSION}-${SCALA_VERSION}
-        generation: 1
         importPolicy: {}
         name: ${SBT_VERSION}-${SCALA_VERSION}
         referencePolicy:

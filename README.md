@@ -11,22 +11,29 @@ Create the s2i image with
 
 ### invoke
 
-build an image tagged as `image-name`
+Build the application image
 
 `s2i build <path / url> sbt-s2i <image-name>`
-
 
 ### configuration
 
 - `SBT_SUBPROJECT`; optional string that specifies the sbt subproject to build in (not needed if not multi-project)
 - `plugins.sbt`; contains default set of sbt plugins that will be cached during the image build
 
-### OpenShift Imagestream
+### yml templates
 
-An OpenShift Imagestream is provided that can be used in the OpenSHift console to build applications using this s2i image. To use it, simply add it as follows:
+- Full config in `template.yml`
+- ImageStream in `imagestream.yml`
+
+To see the parameters for a template from the cli
 
 ```
-oc create -f sbt.yml
+#! oc process --parameters -f imagestream.yml 
+NAME                DESCRIPTION                             GENERATOR           VALUE
+SBT_VERSION         Version of SBT to use (eg. 0.13.16).                        0.13.16
+SCALA_VERSION       Version of Scala to use (eg. 2.12.5).                       2.12.5
 ```
 
-Note the openshift user must have rights to the openshift namespace (i.e. a cluster admin).
+To process a template from the cli
+
+`oc create -f <template>`
