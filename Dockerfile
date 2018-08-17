@@ -32,13 +32,13 @@ RUN mkdir -p /tmp/caching/project \
  && echo "scalaVersion := \"$SCALA_VERSION\"" > build.sbt \
  && mv /tmp/plugins.sbt project \
  && sbt -v -sbt-dir $SBT_DIR -sbt-boot $SBT_DIR/boot -ivy $IVY_DIR compile \
- && chown -R 1001:0 /opt/app-root \
+ && chown -R jenkins:0 /opt/app-root \
  && chmod -R g+rw /opt/app-root \
  && rm -rf /tmp/*
 
 COPY ./s2i/bin/ /usr/libexec/s2i
 
-USER 1001
+USER jenkins
 EXPOSE 9000
 
 CMD ["/usr/libexec/s2i/usage"]
