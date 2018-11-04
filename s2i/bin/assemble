@@ -37,4 +37,5 @@ chgrp 0 ${sbt_target_dir}/universal/stage/bin/*
 chmod g+x ${sbt_target_dir}/universal/stage/bin/*
 
 echo "---> Scripts prepared..."
-ls -al ${sbt_target_dir}/universal/stage/bin
+ln -s ${sbt_target_dir}/universal/stage/bin/* /opt/app-root/bin
+ls -al /opt/app-root/bin

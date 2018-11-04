@@ -26,7 +26,7 @@ RUN INSTALL_PKGS="nano curl net-tools tar unzip which lsof java-1.8.0-openjdk ja
 
 COPY plugins.sbt /tmp
 
-RUN mkdir -p /tmp/caching/project \
+RUN mkdir -p /tmp/caching/project /opt/app-root/bin \
  && cd /tmp/caching \
  && echo "sbt.version = $SBT_VERSION" > project/build.properties \
  && echo "scalaVersion := \"$SCALA_VERSION\"" > build.sbt \
