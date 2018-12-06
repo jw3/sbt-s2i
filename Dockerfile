@@ -17,7 +17,7 @@ LABEL io.k8s.display-name="sbt-s2i $SBT_S2I_BUILDER_VERSION" \
 
 USER root
 
-RUN INSTALL_PKGS="nano curl net-tools tar unzip which lsof java-1.8.0-openjdk java-1.8.0-openjdk-devel sbt-$SBT_VERSION" \
+RUN INSTALL_PKGS="nano curl net-tools tar unzip which lsof openjdk-8-jdk-headless sbt-$SBT_VERSION" \
  && curl -s https://bintray.com/sbt/rpm/rpm > bintray-sbt-rpm.repo \
  && mv bintray-sbt-rpm.repo /etc/yum.repos.d/ \
  && yum install -y --enablerepo=centosplus $INSTALL_PKGS \
